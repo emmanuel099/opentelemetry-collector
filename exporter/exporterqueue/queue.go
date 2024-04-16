@@ -43,10 +43,17 @@ type Factory[T any] func(context.Context, Settings, Config) Queue[T]
 // until https://github.com/open-telemetry/opentelemetry-collector/issues/8122 is resolved.
 func NewMemoryQueueFactory[T itemsCounter]() Factory[T] {
 	return func(_ context.Context, _ Settings, cfg Config) Queue[T] {
-		return queue.NewBoundedMemoryQueue[T](queue.MemoryQueueSettings[T]{
-			Sizer:    sizerFromConfig[T](cfg),
-			Capacity: capacityFromConfig(cfg),
-		})
+		if cfg.Blocking {
+			return queue.NewBlockingMemoryQueue[T](queue.MemoryQueueSettings[T]{
+				Sizer:    sizerFromConfig[T](cfg),
+				Capacity: capacityFromConfig(cfg),
+			})
+		} else {
+			return queue.NewBoundedMemoryQueue[T](queue.MemoryQueueSettings[T]{
+				Sizer:    sizerFromConfig[T](cfg),
+				Capacity: capacityFromConfig(cfg),
+			})
+		}
 	}
 }
 

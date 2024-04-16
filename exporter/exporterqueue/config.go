@@ -20,6 +20,8 @@ type Config struct {
 	NumConsumers int `mapstructure:"num_consumers"`
 	// QueueSize is the maximum number of requests allowed in queue at any given time.
 	QueueSize int `mapstructure:"queue_size"`
+	// Blocking controls whether items should be dropped (false) or producers should be blocked (true) when the queue is full.
+	Blocking bool `mapstructure:"blocking"`
 }
 
 // NewDefaultConfig returns the default Config.
@@ -30,6 +32,7 @@ func NewDefaultConfig() Config {
 		Enabled:      true,
 		NumConsumers: 10,
 		QueueSize:    1_000,
+		Blocking:     false,
 	}
 }
 
