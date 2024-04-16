@@ -109,6 +109,7 @@ func WithQueue(config QueueSettings) Option {
 			Enabled:      config.Enabled,
 			NumConsumers: config.NumConsumers,
 			QueueSize:    config.QueueSize,
+			Blocking:     config.Blocking,
 		})
 		o.queueSender = newQueueSender(q, o.set, config.NumConsumers, o.exportFailureMessage)
 		return nil

@@ -37,6 +37,9 @@ type QueueSettings struct {
 	NumConsumers int `mapstructure:"num_consumers"`
 	// QueueSize is the maximum number of batches allowed in queue at a given time.
 	QueueSize int `mapstructure:"queue_size"`
+	// Blocking controls whether items should be dropped (false) or producers should
+	// be blocked (true) when the queue is full.
+	Blocking bool `mapstructure:"blocking"`
 	// StorageID if not empty, enables the persistent storage and uses the component specified
 	// as a storage extension for the persistent queue
 	StorageID *component.ID `mapstructure:"storage"`
@@ -51,6 +54,7 @@ func NewDefaultQueueSettings() QueueSettings {
 		// This can be estimated at 1-4 GB worth of maximum memory usage
 		// This default is probably still too high, and may be adjusted further down in a future release
 		QueueSize: defaultQueueSize,
+		Blocking:  false,
 	}
 }
 
